@@ -7,8 +7,14 @@
     <title>Zitie Maker</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-slider.min.css" rel="stylesheet">
-    <link href="./css/main.css" rel="stylesheet">
-    <script type="text/javascript" src="index.js"></script>
+    <link href="css/main.css" rel="stylesheet">
+    <script src="js/hanzi-writer.min.js" type="text/javascript"></script>
+    <script src="js/jquery.min.js" type="text/javascript"></script>
+    <script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="js/bootstrap-slider.min.js" type="text/javascript"></script>
+    <script src="js/pinyin_dict_withtone.js" type="text/javascript"></script>
+    <script src="js/pinyinUtil.js" type="text/javascript"></script>
+    <script src="js/bundle.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -19,9 +25,9 @@
         <div id="overlay">
             <div id="content" style="background-color: aliceblue; width:400px;">
                 <table border="1" cellspacing="0" height="150">
-                    <caption style="caption-side:top; text-align:center;" align="top">田字格字帖设置</caption>
+                    <caption style="caption-side:top; text-align:center;" align="top">字帖格式设置</caption>
                     <tr>
-                        <td colspan="2">字帖内容(十字十行，不足补空白行)：</td>
+                        <td colspan="2">字帖内容(一字一行，共十字十行，不足补空行)：</td>
                     </tr>
                     <tr>
                         <td colspan="2"><textarea name="hz" style="width:380px; height: 200px;" id="inputContent">白日依山尽黄河入海流</textarea></td>
@@ -33,11 +39,11 @@
                     <tr>
                         <td>模板类型：</td>
                         <td>
-                            <input type="radio" name="modelType" value="1" checked="">正常输入</input>
+                            <input type="radio" name="modelType" value="1" checked="">首字+描红</input>
                             </br>
-                            <input type="radio" name="modelType" value="2">正常输入加空行</input>
+                            <input type="radio" name="modelType" value="2">首字+描红+空行</input>
                             </br>
-                            <input type="radio" name="modelType" value="3">一字三描红</input>
+                            <input type="radio" name="modelType" value="3">首字+三描红</input>
                             </br>
                             <input type="radio" name="modelType" value="4">隔字描红</input>
                             </br>
@@ -69,8 +75,10 @@
                     <tr>
                         <td>字格颜色：</td>
                         <td>
-                            <input type="radio" name="zgColor" value="1" checked="">绿色</input>&nbsp;&nbsp;&nbsp;
-                            <input type="radio" name="zgColor" value="2">黑色</input>&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="zgColor" value="1" checked="">绿色</input>
+                            &nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="zgColor" value="2">黑色</input>
+                            &nbsp;&nbsp;&nbsp;
                             <input type="radio" name="zgColor" value="3">红色</input>
                         </td>
                     </tr>

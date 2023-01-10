@@ -1,6 +1,8 @@
     @font-face {
         font-family: 'hy-py';
         src: url('../img/py.ttf') format('truetype');
+        /* https://www.motobit.com/util/base64-decoder-encoder.asp */
+        /* src: url('data:font/truetype;charset=utf-8;base64,数据') format('truetype'); */
     }
 
     body,

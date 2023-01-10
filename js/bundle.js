@@ -16,8 +16,12 @@
             return `rgba(${Config.FontColor}, ${Config.FontTransparent})`;
         }
 
-        static GetTransparentFont() {
+        static GetTransparentFontColor() {
             return `rgba(${Config.FontColor}, 0)`;
+        }
+
+        static GetNonTransparentFontColor() {
+            return `rgba(${Config.FontColor}, 1)`;
         }
 
         static saveToStorage() {
@@ -69,7 +73,7 @@
                 min: 0,
                 max: 1,
                 step: 0.1,
-                value: 0.5,
+                value: 0.3,
                 formatter: function(value) {
                     if (value == 0) {
                         return "无" + value
@@ -93,7 +97,7 @@
             $('input[type=radio]').on("change", function(event) {
                 this.onSettingConfirmed(false);
             }.bind(this));
-            
+
             document.getElementById("btnConfirm").onclick = this.onSettingConfirmed.bind(this);
         }
 
@@ -162,7 +166,7 @@
             let h3Title = document.createElement('h3');
             // style="text-align:center;"
             // h3Title.setAttribute('style', "text-align:center;");
-            h3Title.style.cssText = "text-align:center;"
+            h3Title.style.cssText = `text-align:center;font-family:${Config.FontName}`;
             h3Title.textContent = Config.Title;
             ulPrintContent.append(h3Title);
 
@@ -173,8 +177,13 @@
                 }
                 this.addTeachLine(ulPrintContent, curChar);
                 this.addHanziLine(ulPrintContent, curChar);
+                if (Config.ModuleType == 2) {
+                    //正常输入加空行
+                    this.addTeachLine(ulPrintContent, curChar, true);
+                    this.addHanziLine(ulPrintContent, curChar, true);
+                }
             }
-            if (inputContent.length < 10) {
+            if (inputContent.length < 10) { // 行数不够10行，空白行凑齐
                 for (let i = 0; i < 10 - inputContent.length; i++) {
                     let curChar = '一'; //没用的占位字符，保证字体设置生效
                     this.addTeachLine(ulPrintContent, curChar, true);
@@ -223,9 +232,9 @@
             liTeachPy.className = 'teach-line-py';
             liTeachPy.textContent = pinyinUtil.getPinyin(curChar, ' ', true, false);
             if (isForceTransparentColor) { // 如果指定了字体颜色，则用指定颜色
-                // liTeachPy.style.setProperty("color", Config.GetTransparentFont());
-                liTeachPy.style.setProperty("-webkit-text-stroke", `2px ${Config.GetTransparentFont()}`);
-                liTeachHz.style.setProperty("-webkit-text-stroke", `2px ${Config.GetTransparentFont()}`);
+                // liTeachPy.style.setProperty("color", Config.GetTransparentFontColor());
+                liTeachPy.style.setProperty("-webkit-text-stroke", `2px ${Config.GetTransparentFontColor()}`);
+                liTeachHz.style.setProperty("-webkit-text-stroke", `2px ${Config.GetTransparentFontColor()}`);
                 liTeachPy.style.setProperty("color", 'transparent');
                 liTeachHz.style.setProperty("color", 'transparent');
             }
@@ -234,52 +243,71 @@
 
 
             HanziWriter.loadCharacterData(curChar).then(function(charData) {
-                // console.log(charData);
                 for (var i = 0; i < charData.strokes.length; i++) {
                     let liTeachBs = document.createElement('span');
                     liTeachBs.className = 'teach-line-bs';
                     if (isForceTransparentColor) { // 如果指定了字体颜色，则用指定颜色
                         // liTeachPy.style.setProperty("color", Config.GetTransparentFont());
-                        liTeachBs.style.setProperty("-webkit-text-stroke", `2px ${Config.GetTransparentFont()}`);
+                        liTeachBs.style.setProperty("-webkit-text-stroke", `2px ${Config.GetTransparentFontColor()}`);
                         liTeachBs.style.setProperty("color", 'transparent');
                     }
                     liTeach.appendChild(liTeachBs);
                     var strokesPortion = charData.strokes.slice(0, i + 1);
                     this.renderFanningStrokes(liTeachBs, strokesPortion, isForceTransparentColor);
                 }
-            }.bind(this));
+            }.bind(this)).catch(err => {
+                console.log(err);
+            });
 
             ulPrintContent.append(liTeach)
         }
 
         addHanziLine(ulPrintContent, curChar, isForceTransparentColor=false) {
             let hzLine = document.createElement("li");
-            const doubleWidthSpace = '　'; //全角空格，保证字体设置生效
             let fontColor = Config.GetFontColor();
+            let fontSolid = Config.FontSolid;
             hzLine.className = 'hz-line';
             for (let n = 0; n < 12; ++n) { //一行12个字
                 let hzSpan = document.createElement("span");
-                if (Config.ModuleType == 3 && n > 2) {
-                    //一字三描红：从第四个字开始设置字体为全透明
+                if (Config.ModuleType == 3) {
+                    //首字+三描红：从第四个字开始设置字体为全透明
                     // hzSpan.innerText = doubleWidthSpace;
-                    fontColor = Config.GetTransparentFont();
+                    if (n == 0) {
+                        fontSolid = 1;
+                        fontColor = Config.GetNonTransparentFontColor();
+                    } else if (n < 4){
+                        fontSolid = Config.FontSolid;
+                        fontColor = Config.GetFontColor();
+                    } else {
+                        fontColor = Config.GetTransparentFontColor();
+                    }
                 } else if (Config.ModuleType == 4) {
                     //隔字描红:设置偶数字体为全透明
                     // hzSpan.innerText = n % 2 == 0 ? curChar : doubleWidthSpace;
-                    fontColor = n % 2 == 0 ? Config.GetFontColor() : Config.GetTransparentFont();
+                    fontColor = n % 2 == 0 ? Config.GetFontColor() : Config.GetTransparentFontColor();
                 } else if (Config.ModuleType == 6) {
                     // 空行
-                    fontColor = Config.GetTransparentFont();
+                    fontColor = Config.GetTransparentFontColor();
+                } else if (Config.ModuleType == 1 || Config.ModuleType == 2) {
+                    // 1 - 首字+描红: 首字实心，全黑
+                    // 2 - 首字+描红+空行
+                    if (n == 0) {
+                        fontSolid = 1;
+                        fontColor = Config.GetNonTransparentFontColor();
+                    } else {
+                        fontSolid = Config.FontSolid;
+                        fontColor = Config.GetFontColor();
+                    }
                 } else {
-                    // 正常输入
+                    // 其他
                     fontColor = Config.GetFontColor();
                 }
                 if (isForceTransparentColor) {
-                    fontColor = Config.GetTransparentFont();
+                    fontColor = Config.GetTransparentFontColor();
                 }
                 hzSpan.innerText = curChar;
                 hzSpan.style.cssText = "background: url(img/bg" + Config.ZgType + Config.ZgColor + ".svg); ";
-                if (Config.FontSolid == 0) {
+                if (fontSolid == 0) {
                     // 空心字
                     // -webkit-text-stroke: 2px #C73A14;
                     hzSpan.style.setProperty("-webkit-text-stroke", `2px ${fontColor}`);
