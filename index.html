@@ -23,14 +23,14 @@
             <div><button id="btnSetting">设置</button></div>
         </div>
         <div id="overlay">
-            <div id="content" style="background-color: aliceblue; width:400px;">
-                <table border="1" cellspacing="0" height="150">
+            <div id="content" style="background-color: white; width:480px;">
+                <table border="0" cellspacing="0" height="150" style="border-collapse:collapse" class="setting-table">
                     <caption style="caption-side:top; text-align:center;" align="top">字帖格式设置</caption>
                     <tr>
                         <td colspan="2">字帖内容(一字一行，共十字十行，不足补空行)：</td>
                     </tr>
                     <tr>
-                        <td colspan="2"><textarea name="hz" style="width:380px; height: 200px;" id="inputContent">白日依山尽黄河入海流</textarea></td>
+                        <td colspan="2"><textarea name="hz" style="width:470px; height: 200px;" id="inputContent">白日依山尽黄河入海流</textarea></td>
                     </tr>
                     <tr>
                         <td>字帖标题：</td>
@@ -39,17 +39,21 @@
                     <tr>
                         <td>模板类型：</td>
                         <td>
-                            <input type="radio" name="modelType" value="1" checked="">首字+描红</input>
-                            </br>
-                            <input type="radio" name="modelType" value="2">首字+描红+空行</input>
-                            </br>
-                            <input type="radio" name="modelType" value="3">首字+三描红</input>
-                            </br>
-                            <input type="radio" name="modelType" value="4">隔字描红</input>
-                            </br>
-                            <input type="radio" name="modelType" value="5">整行描红</input>
-                            </br>
-                            <input type="radio" name="modelType" value="6">空行</input>
+                            <input type="radio" name="modelType" value="1" checked="" id="mt1"><label for="mt1"> 首字+描红</label></input>
+                            <br/>
+                            <input type="radio" name="modelType" value="2" id="mt2"><label for="mt2"> 首字+描红+空行</label></input>
+                            <br/>
+                            <input type="radio" name="modelType" value="3" id="mt3"><label for="mt3"> 首字+三描红</label></input>
+                            <br/>
+                            <input type="radio" name="modelType" value="4" id="mt4"><label for="mt4"> 隔字描红</label></input>
+                            <br/>
+                            <input type="radio" name="modelType" value="7" id="mt5"><label for="mt5"> 笔顺+隔字描红</label></input>
+                            <br/>
+                            <input type="radio" name="modelType" value="8" id="mt6"><label for="mt6"> 笔顺+整行描红</label></input>
+                            <br/>
+                            <input type="radio" name="modelType" value="5" id="mt7"><label for="mt7"> 整行描红</label></input>
+                            <br/>
+                            <input type="radio" name="modelType" value="6" id="mt8"><label for="mt8"> 空行</label></input>
                         </td>
                     </tr>
                     <tr>
@@ -61,35 +65,35 @@
                     <tr>
                         <td>字格类型：</td>
                         <td>
-                            <input type="radio" name="zgType" value="1" checked="">田字格</input>
+                            <input type="radio" name="zgType" value="1" checked="" id="zt1"><label for="zt1"> 田字格</label></input>
                             &nbsp;&nbsp;&nbsp;
-                            <input type="radio" name="zgType" value="2">米字格</input>
+                            <input type="radio" name="zgType" value="2" id="zt2"><label for="zt2"> 米字格</label></input>
                             &nbsp;&nbsp;&nbsp;
-                            <input type="radio" name="zgType" value="4">回宫格</input>
-                            </br>
-                            <input type="radio" name="zgType" value="3">米字回宫格</input>
+                            <input type="radio" name="zgType" value="4" id="zt3"><label for="zt3"> 回宫格</label></input>
+                            <br/>
+                            <input type="radio" name="zgType" value="3" id="zt4"><label for="zt4"> 米字回宫格</label></input>
                             &nbsp;&nbsp;&nbsp;
-                            <input type="radio" name="zgType" value="5">无格</input>
+                            <input type="radio" name="zgType" value="5" id="zt5"><label for="zt5"> 无格</label></input>
                         </td>
                     </tr>
                     <tr>
                         <td>字格颜色：</td>
                         <td>
-                            <input type="radio" name="zgColor" value="1" checked="">绿色</input>
+                            <input type="radio" name="zgColor" value="1" checked="" id="zc1"><label for="zc1"> 绿色</label></input>
                             &nbsp;&nbsp;&nbsp;
-                            <input type="radio" name="zgColor" value="2">黑色</input>
+                            <input type="radio" name="zgColor" value="2" id="zc2"><label for="zc2"> 黑色</label></input>
                             &nbsp;&nbsp;&nbsp;
-                            <input type="radio" name="zgColor" value="3">红色</input>
+                            <input type="radio" name="zgColor" value="3" id="zc3"><label for="zc3"> 红色</label></input>
                         </td>
                     </tr>
                     <tr>
                         <td>文字颜色：</td>
                         <td>
-                            <input type="radio" name="fontColor" value="102, 255, 153">绿色</input>
+                            <input type="radio" name="fontColor" value="102, 255, 153" id="fc1"><label for="fc1"> 绿色</label></input>
                             &nbsp;&nbsp;&nbsp;
-                            <input type="radio" name="fontColor" value="0, 0, 0">黑色</input>
+                            <input type="radio" name="fontColor" value="0, 0, 0" id="fc2"><label for="fc2"> 黑色</label></input>
                             &nbsp;&nbsp;&nbsp;
-                            <input type="radio" name="fontColor" value="224, 6, 6" checked="">红色</input>
+                            <input type="radio" name="fontColor" value="224, 6, 6" checked="" id="fc3"><label for="fc3"> 红色</label></input>
                         </td>
                     </tr>
                     <tr>
@@ -101,8 +105,8 @@
                     <tr>
                         <td>字体虚实：</td>
                         <td>
-                            <input type="radio" name="fontSolid" value="1" checked="true">实心</input>
-                            <input type="radio" name="fontSolid" value="0">空心</input>
+                            <input type="radio" name="fontSolid" value="1" checked="true" id="fs1"><label for="fs1"> 实心</label></input>
+                            <input type="radio" name="fontSolid" value="0" id="fs2"><label for="fs2"> 空心</label></input>
                         </td>
                     </tr>
                     <tr>
